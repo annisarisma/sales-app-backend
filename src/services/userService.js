@@ -1,7 +1,8 @@
 import prisma from '../prisma/client.js';
 import bcrypt from 'bcrypt'
+import generateAuthToken from '../helpers/tokenHelper.js'
 
-const authenticateUser = async (username, password) => {
+const authenticateUser = async ({username, email, password}) => {
   // model
   const user = await prisma.users.findUnique({ 
     where: {
@@ -14,6 +15,7 @@ const authenticateUser = async (username, password) => {
     throw new Error('User not found');
   }
 
+  console.log('asdasd');
   // validation password
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
@@ -97,4 +99,4 @@ const updateUser = async ({ username, email, password }, usrId) => {
   });
 };
 
-export default { getUser, getUserById, createUser, updateUser };
+export default { authenticateUser, getUser, getUserById, createUser, updateUser };

@@ -1,17 +1,17 @@
 import userService from '../services/userService.js';
 
-const authenticateUser = async (req, res) => {
-  const { username, password } = req.body;
+const loginUser = async (req, res) => {
+  const { username, email, password } = req.body;
 
   try {
-    const response = await userService.authenticateUser({username, password});
+    const response = await userService.authenticateUser({username, email, password});
     res.status(200).json({
       message: 'Login successfully',
       data: response.user,
       token: response.token
     })
   } catch (error) {
-    
+    res.status(404).json({ message: error.message });
   }
 }
 
@@ -74,4 +74,4 @@ const updateUser = async (req, res) => {
   }
 };
 
-export default { getUser, getUserById, createUser, updateUser };
+export default { loginUser, getUser, getUserById, createUser, updateUser };

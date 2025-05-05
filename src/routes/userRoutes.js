@@ -3,6 +3,9 @@ import userController from '../controllers/userController.js';
 
 const router = express.Router();
 
+// authentication
+router.post('/login', userController.loginUser);
+
 // user controller
 router.get('/users', userController.getUser);
 router.get('/users/:id', userController.getUserById);

@@ -10,4 +10,4 @@ const generateAuthToken = (user) => {
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 };
 
-export default { generateAuthToken };
+export default generateAuthToken ;
