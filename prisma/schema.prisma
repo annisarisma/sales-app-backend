@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -16,7 +15,7 @@ datasource db {
 
 model users {
   usr_id    Int    @id @default(autoincrement())
-  rol_id Int
+  rol_id Int?
   username  String @unique
   email String @unique
   first_name String
@@ -24,13 +23,13 @@ model users {
   phone_number String
   address String
   ctime DateTime @default(now())
-  cusr_id Int
+  cusr_id Int?
   mtime DateTime @updatedAt
-  musr_id Int
+  musr_id Int?
   dtime DateTime?
-  dusr_id Int
+  dusr_id Int?
 
-  roles roles @relation(fields: [rol_id], references: [rol_id])
+  roles roles? @relation(fields: [rol_id], references: [rol_id])
   user_profiles user_profiles?
 }
 

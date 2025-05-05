@@ -15,11 +15,167 @@ datasource db {
 }
 
 model users {
-  id           Int    @id @default(autoincrement())
-  username     String @unique
-  email        String @unique
+  usr_id       Int       @id @default(autoincrement())
+  rol_id       Int
+  username     String    @unique
+  email        String    @unique
   first_name   String
   last_name    String
   phone_number String
   address      String
+  ctime        DateTime  @default(now())
+  cusr_id      Int
+  mtime        DateTime  @updatedAt
+  musr_id      Int
+  dtime        DateTime?
+  dusr_id      Int
+
+  roles         roles          @relation(fields: [rol_id], references: [rol_id])
+  user_profiles user_profiles?
+}
+
+model user_profiles {
+  usp_id       Int       @id @default(autoincrement())
+  usr_id       Int       @unique
+  first_name   String
+  middle_name  String?
+  last_name    String
+  birth_date   String
+  gender       String
+  phone_number String
+  address      String
+  ctime        DateTime  @default(now())
+  cusr_id      Int
+  mtime        DateTime  @updatedAt
+  musr_id      Int
+  dtime        DateTime?
+  dusr_id      Int
+
+  users users @relation(fields: [usr_id], references: [usr_id])
+}
+
+model roles {
+  rol_id           Int       @id @default(autoincrement())
+  role_code        String    @unique
+  role_name        String
+  role_description String
+  ctime            DateTime  @default(now())
+  cusr_id          Int
+  mtime            DateTime  @updatedAt
+  musr_id          Int
+  dtime            DateTime?
+  dusr_id          Int
+
+  users users[]
+}
+
+model categories {
+  cat_id        Int       @id @default(autoincrement())
+  category_code String    @unique
+  category_name String
+  ctime         DateTime  @default(now())
+  cusr_id       Int
+  mtime         DateTime  @updatedAt
+  musr_id       Int
+  dtime         DateTime?
+  dusr_id       Int
+
+  products products[]
+}
+
+model products {
+  prd_id       Int       @id @default(autoincrement())
+  cat_id       Int
+  product_code String
+  product_name String
+  ctime        DateTime  @default(now())
+  cusr_id      Int
+  mtime        DateTime  @updatedAt
+  musr_id      Int
+  dtime        DateTime?
+  dusr_id      Int
+
+  categories       categories         @relation(fields: [cat_id], references: [cat_id])
+  product_material product_material[]
+}
+
+model product_material {
+  pmt_id   Int       @id @default(autoincrement())
+  prd_id   Int
+  mat_id   Int
+  quantity String
+  ctime    DateTime  @default(now())
+  cusr_id  Int
+  mtime    DateTime  @updatedAt
+  musr_id  Int
+  dtime    DateTime?
+  dusr_id  Int
+
+  products products @relation(fields: [prd_id], references: [prd_id])
+}
+
+model units {
+  unt_id    Int       @id @default(autoincrement())
+  unit_code String
+  unit_name String
+  ctime     DateTime  @default(now())
+  cusr_id   Int
+  mtime     DateTime  @updatedAt
+  musr_id   Int
+  dtime     DateTime?
+  dusr_id   Int
+
+  materials materials[]
+}
+
+model suppliers {
+  sup_id           Int       @id @default(autoincrement())
+  supplier_name    String
+  supplier_phone   String
+  supplier_address String
+  supplier_email   String
+  ctime            DateTime  @default(now())
+  cusr_id          Int
+  mtime            DateTime  @updatedAt
+  musr_id          Int
+  dtime            DateTime?
+  dusr_id          Int
+
+  materials materials[]
+}
+
+model materials {
+  mat_id         Int       @id @default(autoincrement())
+  unt_id         Int
+  sup_id         Int
+  material_code  String
+  material_brand String
+  material_name  String
+  ctime          DateTime  @default(now())
+  cusr_id        Int
+  mtime          DateTime  @updatedAt
+  musr_id        Int
+  dtime          DateTime?
+  dusr_id        Int
+
+  units     units     @relation(fields: [unt_id], references: [unt_id])
+  suppliers suppliers @relation(fields: [sup_id], references: [sup_id])
+
+  material_stock material_stock[]
+}
+
+model material_stock {
+  mst_id    Int       @id @default(autoincrement())
+  mat_id    Int
+  pod_id    Int
+  type      String
+  is_active Boolean
+  ctime     DateTime  @default(now())
+  cusr_id   Int
+  mtime     DateTime  @updatedAt
+  musr_id   Int
+  dtime     DateTime?
+  dusr_id   Int
+
+  materials materials @relation(fields: [mat_id], references: [mat_id])
 }
