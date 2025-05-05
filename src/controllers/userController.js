@@ -1,5 +1,20 @@
 import userService from '../services/userService.js';
 
+const authenticateUser = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const response = await userService.authenticateUser({username, password});
+    res.status(200).json({
+      message: 'Login successfully',
+      data: response.user,
+      token: response.token
+    })
+  } catch (error) {
+    
+  }
+}
+
 const getUser = async (req, res) => {
   try {
     const response = await userService.getUser();
@@ -21,19 +36,42 @@ const getUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const { username, email, first_name, last_name, phone_number, address } = req.body;
+  const { username, email, password } = req.body;
 
   try {
-    const newUser = await userService.createUser({ username, email, first_name, last_name, phone_number, address });
-    res.status(201).json(newUser);
+    const response = await userService.createUser({ username, email, password });
+
+    //  response
+    res.status(201).json({
+      message: 'User created successfully',
+      data: response
+    });
   } catch (error) {
-    console.error(error);
     if (error.code === 'P2002') {
-      return res.status(400).json({ error: 'Email sudah terdaftar' });
+      return res.status(400).json({ error: 'Email or username already exist' });
     }
-    console.error('Error saat menambahkan user:', error)
-    res.status(500).json({ error: 'Gagal menambahkan user' });
+    res.status(500).json({ error: error.message });
   }
 };
 
-export default { getUser, getUserById, createUser };
+const updateUser = async (req, res) => {
+  const { usrId } = req.params;
+  const { username, email, password } = req.body;
+
+  try {
+    const response = await userService.updateUser({ username, email, password }, usrId);
+    
+    // response
+    res.status(201).json({
+      message: 'User updated successfully',
+      data: response
+    });
+  } catch (error) {
+    if (error.code === 'P2002') {
+      return res.status(400).json({ error: 'Email or username already exist' });
+    }
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export default { getUser, getUserById, createUser, updateUser };
