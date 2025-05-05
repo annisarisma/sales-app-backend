@@ -1,6 +1,26 @@
 import userService from '../services/userService.js';
 
-const createUserController = async (req, res) => {
+const getUser = async (req, res) => {
+  try {
+    const response = await userService.getUser();
+    res.status(200).json(response);
+  } catch (error) {
+    console.error("Error getting user: ", error.message);
+    res.status(404).json({ message: 'get user was failed' });
+  }
+};
+
+const getUserById = async (req, res) => {
+  try {
+    const response = await userService.getUserById(req.params.id);
+    res.status(200).json(response);
+  } catch (error) {
+    console.error("Error getting user: ", error.message);
+    res.status(404).json({ message: 'get user was failed' });
+  }
+};
+
+const createUser = async (req, res) => {
   const { username, email, first_name, last_name, phone_number, address } = req.body;
 
   try {
@@ -16,4 +36,4 @@ const createUserController = async (req, res) => {
   }
 };
 
-export default { createUserController };
+export default { getUser, getUserById, createUser };
