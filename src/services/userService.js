@@ -99,4 +99,13 @@ const updateUser = async ({ username, email, password }, usrId) => {
   });
 };
 
-export default { authenticateUser, getUser, getUserById, createUser, updateUser };
+const destroyUser = async (usrId) => {
+  // Cari user dan hapus
+  const user = await prisma.users.delete({
+    where: { 
+      usr_id: usrId
+    },
+  });
+};
+
+export default { authenticateUser, getUser, getUserById, createUser, updateUser, destroyUser };

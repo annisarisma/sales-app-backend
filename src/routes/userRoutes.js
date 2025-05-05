@@ -8,9 +8,10 @@ router.post('/login', userController.loginUser);
 
 // user controller
 router.get('/users', userController.getUser);
-router.get('/users/:id', userController.getUserById);
+router.get('/users/:usrId', userController.getUserById);
 router.post('/users', userController.createUser);
-router.put('/users/:id', userController.updateUser);
+router.put('/users/:usrId', userController.updateUser);
+router.delete('/users/:usrId', userController.destroyUser);
 
 // role controller
 router.get('/roles', userController.getUser);
