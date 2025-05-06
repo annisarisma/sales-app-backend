@@ -28,7 +28,7 @@ const getUser = async (req, res) => {
 
 const getUserById = async (req, res) => {
   try {
-    const response = await userService.getUserById(req.params.id);
+    const response = await userService.getUserById(req.params.usrId);
     res.status(200).json(response);
   } catch (error) {
     console.error("error: ", error.message);
