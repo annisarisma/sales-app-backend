@@ -1,5 +1,6 @@
 import express from 'express';
 import userController from '../controllers/userController.js';
+import roleController from '../controllers/roleController.js';
 
 const router = express.Router();
 
@@ -14,9 +15,7 @@ router.put('/users/:usrId', userController.updateUser);
 router.delete('/users/:usrId', userController.destroyUser);
 
 // role controller
-router.get('/roles', userController.getUser);
-router.get('/roles/:id', userController.getUserById);
-router.post('/roles', userController.createUser);
-router.put('/roles/:id', userController.updateUser);
+router.get('/roles', roleController.getRole);
+router.post('/roles', roleController.getRole);
 
 export default router;
