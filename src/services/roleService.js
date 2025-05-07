@@ -40,9 +40,9 @@ const updateRole = async ({ role_code, role_name, role_description }, rolId) => 
 
 const destroyRole = async (rolId) => {
   // Cari user dan hapus
-  return await prisma.users.delete({
+  return await prisma.roles.delete({
     where: { 
-      usr_id: Number(rolId)
+      rol_id: Number(rolId)
     },
   });
 };
