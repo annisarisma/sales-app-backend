@@ -57,7 +57,7 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { usrId } = req.params;
+  const usrId = req.params.usrId;
   const { username, email, password } = req.body;
 
   try {
@@ -83,7 +83,7 @@ const destroyUser = async (req, res) => {
     const response = await userService.destroyUser(usrId);
     
     // response
-    res.status(201).json({
+    res.status(200).json({
       message: 'User deleted successfully',
       data: response
     });

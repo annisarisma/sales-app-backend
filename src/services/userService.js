@@ -70,10 +70,13 @@ const createUser = async ({ username, email, password }) => {
   });
 };
 
-const updateUser = async ({ username, email, password }, usrId) => {
+const updateUser = async ({ username, email }, usrId) => {
   // validation email
   const emailExists = await prisma.users.findUnique({
-    where: { email },
+    where: { 
+      email,
+      NOT: { usr_id: Number(usrId) }
+    },
   });
   if (emailExists) {
     throw new Error('Email already exist');
@@ -81,29 +84,31 @@ const updateUser = async ({ username, email, password }, usrId) => {
 
   // validation username
   const usernameExists = await prisma.users.findUnique({
-    where: { username },
+    where: { 
+      username,
+      NOT: { usr_id: Number(usrId) }
+    },
   });
   if (usernameExists) {
     throw new Error('Username already exist');
   }
 
-  return await prisma.users.create({
+  return await prisma.users.update({
     where: {
       usr_id: Number(usrId)
     },
     data: {
       username,
-      email,
-      password: hashPassword
+      email
     },
   });
 };
 
 const destroyUser = async (usrId) => {
   // Cari user dan hapus
-  const user = await prisma.users.delete({
+  return await prisma.users.delete({
     where: { 
-      usr_id: usrId
+      usr_id: Number(usrId)
     },
   });
 };
