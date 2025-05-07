@@ -49,11 +49,11 @@ model roles {
   role_name        String
   role_description String
   ctime            DateTime  @default(now())
-  cusr_id          Int
+  cusr_id          Int @default(1)
   mtime            DateTime  @updatedAt
-  musr_id          Int
+  musr_id          Int @default(1)
   dtime            DateTime?
-  dusr_id          Int
+  dusr_id          Int?
   users            users[]
 }
 

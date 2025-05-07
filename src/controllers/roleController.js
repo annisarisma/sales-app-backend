@@ -21,10 +21,10 @@ const getRoleById = async (req, res) => {
 };
 
 const createRole = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { role_code, role_name, role_description } = req.body;
 
   try {
-    const response = await roleService.createRole({ username, email, password });
+    const response = await roleService.createRole({ role_code, role_name, role_description });
 
     //  response
     res.status(201).json({
@@ -33,7 +33,7 @@ const createRole = async (req, res) => {
     });
   } catch (error) {
     if (error.code === 'P2002') {
-      return res.status(400).json({ error: 'Email or username already exist' });
+      return res.status(400).json({ error: 'Role already exist' });
     }
     console.error("error: ", error.message);
     res.status(500).json({ error: error.message });
@@ -42,10 +42,10 @@ const createRole = async (req, res) => {
 
 const updateRole = async (req, res) => {
   const rolId = req.params.rolId;
-  const { username, email, password } = req.body;
+  const { role_code, role_name, role_description } = req.body;
 
   try {
-    const response = await roleService.updateRole({ username, email, password }, rolId);
+    const response = await roleService.updateRole({ role_code, role_name, role_description }, rolId);
     
     // response
     res.status(201).json({

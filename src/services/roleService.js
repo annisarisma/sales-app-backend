@@ -7,71 +7,33 @@ const getRole = async () => {
 };
 
 const getRoleById = async (rolId) => {
-  const response = await prisma.users.findUnique({
+  const response = await prisma.roles.findUnique({
     where: {
-      usr_id: Number(rolId)
+      rol_id: Number(rolId)
     }
   });
   return response;
 };
 
-const createRole = async ({ username, email, password }) => {
-  // validation email
-  const emailExists = await prisma.users.findUnique({
-    where: { email },
-  });
-  if (emailExists) {
-    throw new Error('Email already exist');
-  }
-
-  // validation username
-  const usernameExists = await prisma.users.findUnique({
-    where: { username },
-  });
-  if (usernameExists) {
-    throw new Error('Rolename already exist');
-  }
-
-  const hashPassword = await bcrypt.hash(password, 10);
-  return await prisma.users.create({
+const createRole = async ({ role_code, role_name, role_description }) => {
+  return await prisma.roles.create({
     data: {
-      username,
-      email,
-      password: hashPassword
+      role_code,
+      role_name,
+      role_description
     },
   });
 };
 
-const updateRole = async ({ username, email }, rolId) => {
-  // validation email
-  const emailExists = await prisma.users.findUnique({
-    where: { 
-      email,
-      NOT: { usr_id: Number(rolId) }
-    },
-  });
-  if (emailExists) {
-    throw new Error('Email already exist');
-  }
-
-  // validation username
-  const usernameExists = await prisma.users.findUnique({
-    where: { 
-      username,
-      NOT: { usr_id: Number(rolId) }
-    },
-  });
-  if (usernameExists) {
-    throw new Error('Rolename already exist');
-  }
-
-  return await prisma.users.update({
+const updateRole = async ({ role_code, role_name, role_description }, rolId) => {
+  return await prisma.roles.update({
     where: {
-      usr_id: Number(rolId)
+      rol_id: Number(rolId)
     },
     data: {
-      username,
-      email
+      role_code,
+      role_name,
+      role_description
     },
   });
 };
