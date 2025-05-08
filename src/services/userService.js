@@ -30,8 +30,18 @@ const authenticateUser = async ({username, email, password}) => {
 }
 
 const getUser = async () => {
-  const response = await prisma.users.findMany();
-  return response;
+  const response = await prisma.users.findMany({
+    include: {
+      roles: true
+    }
+  });
+
+  return response.map(user => ({
+    usr_id: user.usr_id,
+    username: user.username,
+    email: user.email,
+    role_name: user.roles?.role_name || null
+  }));
 };
 
 const getUserById = async (usrId) => {
@@ -43,7 +53,7 @@ const getUserById = async (usrId) => {
   return response;
 };
 
-const createUser = async ({ username, email, password }) => {
+const createUser = async ({ rol_id, username, email, password }) => {
   // validation email
   const emailExists = await prisma.users.findUnique({
     where: { email },
@@ -61,16 +71,27 @@ const createUser = async ({ username, email, password }) => {
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
-  return await prisma.users.create({
+  const response = await prisma.users.create({
     data: {
+      rol_id,
       username,
       email,
       password: hashPassword
     },
+    include: {
+      roles: true
+    }
   });
+
+  return {
+    usr_id: response.usr_id,
+    username: response.username,
+    email: response.email,
+    role_name: response.roles?.role_name || null
+  };
 };
 
-const updateUser = async ({ username, email }, usrId) => {
+const updateUser = async ({ rol_id, username, email }, usrId) => {
   // validation email
   const emailExists = await prisma.users.findUnique({
     where: { 
@@ -93,15 +114,26 @@ const updateUser = async ({ username, email }, usrId) => {
     throw new Error('Username already exist');
   }
 
-  return await prisma.users.update({
+  const response = await prisma.users.update({
     where: {
       usr_id: Number(usrId)
     },
     data: {
+      rol_id,
       username,
       email
     },
+    include: {
+      roles: true
+    }
   });
+
+  return {
+    usr_id: response.usr_id,
+    username: response.username,
+    email: response.email,
+    role_name: response.roles?.role_name || null
+  }
 };
 
 const destroyUser = async (usrId) => {

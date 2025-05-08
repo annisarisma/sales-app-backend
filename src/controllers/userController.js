@@ -37,10 +37,10 @@ const getUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { rol_id, username, email, password } = req.body;
 
   try {
-    const response = await userService.createUser({ username, email, password });
+    const response = await userService.createUser({ rol_id, username, email, password });
 
     //  response
     res.status(201).json({
@@ -58,10 +58,10 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const usrId = req.params.usrId;
-  const { username, email, password } = req.body;
+  const { rol_id, username, email, password } = req.body;
 
   try {
-    const response = await userService.updateUser({ username, email, password }, usrId);
+    const response = await userService.updateUser({ rol_id, username, email, password }, usrId);
     
     // response
     res.status(201).json({
