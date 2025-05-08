@@ -35,11 +35,11 @@ model user_profiles {
   phone_number String
   address      String
   ctime        DateTime  @default(now())
-  cusr_id      Int
+  cusr_id      Int?
   mtime        DateTime  @updatedAt
-  musr_id      Int
+  musr_id      Int?
   dtime        DateTime?
-  dusr_id      Int
+  dusr_id      Int?
   users        users     @relation(fields: [usr_id], references: [usr_id])
 }
 
@@ -62,11 +62,11 @@ model categories {
   category_code String     @unique
   category_name String
   ctime         DateTime   @default(now())
-  cusr_id       Int
+  cusr_id       Int?
   mtime         DateTime   @updatedAt
-  musr_id       Int
+  musr_id       Int?
   dtime         DateTime?
-  dusr_id       Int
+  dusr_id       Int?
   products      products[]
 }
 
@@ -75,12 +75,13 @@ model products {
   cat_id           Int
   product_code     String
   product_name     String
+  product_description     String
   ctime            DateTime           @default(now())
-  cusr_id          Int
+  cusr_id          Int?
   mtime            DateTime           @updatedAt
-  musr_id          Int
+  musr_id          Int?
   dtime            DateTime?
-  dusr_id          Int
+  dusr_id          Int?
   product_material product_material[]
   categories       categories         @relation(fields: [cat_id], references: [cat_id])
 }
@@ -91,11 +92,11 @@ model product_material {
   mat_id   Int
   quantity String
   ctime    DateTime  @default(now())
-  cusr_id  Int
+  cusr_id  Int?
   mtime    DateTime  @updatedAt
-  musr_id  Int
+  musr_id  Int?
   dtime    DateTime?
-  dusr_id  Int
+  dusr_id  Int?
   products products  @relation(fields: [prd_id], references: [prd_id])
 }
 
@@ -104,11 +105,11 @@ model units {
   unit_code String
   unit_name String
   ctime     DateTime    @default(now())
-  cusr_id   Int
+  cusr_id   Int?
   mtime     DateTime    @updatedAt
-  musr_id   Int
+  musr_id   Int?
   dtime     DateTime?
-  dusr_id   Int
+  dusr_id   Int?
   materials materials[]
 }
 
@@ -119,11 +120,11 @@ model suppliers {
   supplier_address String
   supplier_email   String
   ctime            DateTime    @default(now())
-  cusr_id          Int
+  cusr_id          Int?
   mtime            DateTime    @updatedAt
-  musr_id          Int
+  musr_id          Int?
   dtime            DateTime?
-  dusr_id          Int
+  dusr_id          Int?
   materials        materials[]
 }
 
@@ -135,11 +136,11 @@ model materials {
   material_brand String
   material_name  String
   ctime          DateTime         @default(now())
-  cusr_id        Int
+  cusr_id        Int?
   mtime          DateTime         @updatedAt
-  musr_id        Int
+  musr_id        Int?
   dtime          DateTime?
-  dusr_id        Int
+  dusr_id        Int?
   material_stock material_stock[]
   suppliers      suppliers        @relation(fields: [sup_id], references: [sup_id])
   units          units            @relation(fields: [unt_id], references: [unt_id])
@@ -152,10 +153,10 @@ model material_stock {
   type      String
   is_active Boolean
   ctime     DateTime  @default(now())
-  cusr_id   Int
+  cusr_id   Int?
   mtime     DateTime  @updatedAt
-  musr_id   Int
+  musr_id   Int?
   dtime     DateTime?
-  dusr_id   Int
+  dusr_id   Int?
   materials materials @relation(fields: [mat_id], references: [mat_id])
 }
