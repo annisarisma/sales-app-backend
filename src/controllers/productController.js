@@ -1,4 +1,3 @@
-import imageService from '../services/imageService.js';
 import productService from '../services/productService.js';
 
 const getProduct = async (req, res) => {
