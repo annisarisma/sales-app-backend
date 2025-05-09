@@ -1,4 +1,3 @@
-import imageService from '../services/imageService.js';
 import productService from '../services/productService.js';
 
 const getProduct = async (req, res) => {
@@ -23,10 +22,11 @@ const getProductById = async (req, res) => {
 
 const createProduct = async (req, res) => {
   const { cat_id, product_code, product_name, product_description } = req.body;
-  const filenames = req.files.map(file => file.filename);
+  const filename = req.files.map(file => file.filename);
 
   try {
-    const response = await productService.createProduct({ cat_id, product_code, product_name, product_description, filenames });
+    const responseProduct = await productService.createProduct({ cat_id, product_code, product_name, product_description });
+    const responseImage = await imageService.
 
     //  response
     res.status(201).json({

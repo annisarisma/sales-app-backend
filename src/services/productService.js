@@ -1,4 +1,5 @@
 import prisma from '../prisma/client.js';
+import imageService from './imageService.js';
 
 const getProduct = async () => {
   const response = await prisma.products.findMany({
@@ -24,10 +25,10 @@ const getProductById = async (prdId) => {
   return response;
 };
 
-const createProduct = async ({ cat_id, product_code, product_name, product_description }) => {
-  const response = await prisma.products.create({
+const createProduct = async ({ cat_id, product_code, product_name, product_description, filenames }) => {
+  const responseProduct = await prisma.products.create({
     data: {
-      cat_id,
+      cat_id: Number(cat_id),
       product_code,
       product_name,
       product_description,
@@ -37,12 +38,15 @@ const createProduct = async ({ cat_id, product_code, product_name, product_descr
     }
   });
 
+  const responseImage = await imageService.createImage(responseProduct.prd_id, filenames);
+
   return {
-    prd_id: response.prd_id,
-    product_code: response.product_code,
-    product_name: response.product_name,
-    product_description: response.product_description,
-    category_name: response.categories?.category_name || null
+    prd_id: responseProduct.prd_id,
+    product_code: responseProduct.product_code,
+    product_name: responseProduct.product_name,
+    product_description: responseProduct.product_description,
+    category_name: responseProduct.categories?.category_name || null,
+    images: responseImage
   };
 };
 

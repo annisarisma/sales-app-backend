@@ -83,7 +83,21 @@ model products {
   dtime            DateTime?
   dusr_id          Int?
   product_material product_material[]
+  images images[]
   categories       categories         @relation(fields: [cat_id], references: [cat_id])
+}
+
+model images {
+  img_id           Int                @id @default(autoincrement())
+  prd_id           Int
+  filename     String
+  ctime            DateTime           @default(now())
+  cusr_id          Int?
+  mtime            DateTime           @updatedAt
+  musr_id          Int?
+  dtime            DateTime?
+  dusr_id          Int?
+  products       products         @relation(fields: [prd_id], references: [prd_id])
 }
 
 model product_material {
