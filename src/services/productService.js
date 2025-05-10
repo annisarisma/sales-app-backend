@@ -20,9 +20,24 @@ const getProductById = async (prdId) => {
   const response = await prisma.products.findUnique({
     where: {
       prd_id: Number(prdId)
+    },
+    include: {
+      categories: true,
+      images: true
     }
   });
-  return response;
+  return {
+    prd_id: response.prd_id,
+    product_code: response.product_code,
+    product_name: response.product_name,
+    product_description: response.product_description,
+    cat_id: response.categories?.cat_id || null,
+    category_name: response.categories?.category_name || null,
+    images: response.images?.map(image => ({
+      img_id: image.img_id,
+      filename: image.filename,
+    })) || null
+  };
 };
 
 const createProduct = async ({ cat_id, product_code, product_name, product_description, filenames }) => {
@@ -50,8 +65,8 @@ const createProduct = async ({ cat_id, product_code, product_name, product_descr
   };
 };
 
-const updateProduct = async ({ cat_id, product_code, product_name, product_description }, prdId) => {
-  const response = await prisma.products.update({
+const updateProduct = async ({ cat_id, product_code, product_name, product_description, existingImages, filenames }, prdId) => {
+  const responseProduct = await prisma.products.update({
     where: {
       prd_id: Number(prdId)
     },
@@ -65,13 +80,20 @@ const updateProduct = async ({ cat_id, product_code, product_name, product_descr
       categories: true
     }
   });
+  
+  await imageService.destroyImage(existingImages, prdId);
+  
+  if (filenames.length !== 0) {
+    await imageService.createImage(responseProduct.prd_id, filenames);
+  }
+  
 
   return {
-    prd_id: response.prd_id,
-    product_code: response.product_code,
-    product_name: response.product_name,
-    product_description: response.product_description,
-    category_name: response.categories?.category_name || null
+    prd_id: responseProduct.prd_id,
+    product_code: responseProduct.product_code,
+    product_name: responseProduct.product_name,
+    product_description: responseProduct.product_description,
+    category_name: responseProduct.categories?.category_name || null,
   };
 };
 

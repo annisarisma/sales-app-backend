@@ -77,12 +77,22 @@ const updateImage = async ({ prd_id, filename }, imgId) => {
   };
 };
 
-const destroyImage = async (imgId) => {
-  return await prisma.images.delete({
-    where: { 
-      img_id: Number(imgId)
-    },
-  });
+const destroyImage = async (imgIds, prdId) => {
+  return await prisma.images.deleteMany(
+    imgIds.length > 0
+    ? {
+        where: {
+          prd_id: Number(prdId),
+          img_id: { notIn: imgIds.map(Number) },
+        },
+      }
+    : {
+        where: {
+          prd_id: Number(prdId),
+        },
+      }
+  );
+
 };
 
 export default { getImage, getImageById, createImage, updateImage, destroyImage };

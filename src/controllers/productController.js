@@ -42,11 +42,12 @@ const createProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-  const prdId = req.params.prdId;
-  const { product_code, product_name, product_description } = req.body;
+  const prdId = req.body._id;
+  const { product_code, product_name, product_description, existingImages } = req.body;
+  const filenames = req.files.map(file => file.filename);
 
   try {
-    const response = await productService.updateProduct({ product_code, product_name, product_description }, prdId);
+    const response = await productService.updateProduct({ product_code, product_name, product_description, existingImages, filenames }, prdId);
     
     // response
     res.status(201).json({

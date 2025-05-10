@@ -23,6 +23,7 @@ const getRoleById = async (req, res) => {
 const createRole = async (req, res) => {
   const { role_code, role_name, role_description } = req.body;
 
+
   try {
     const response = await roleService.createRole({ role_code, role_name, role_description });
 
@@ -41,7 +42,7 @@ const createRole = async (req, res) => {
 };
 
 const updateRole = async (req, res) => {
-  const rolId = req.params.rolId;
+  const rolId = req.body.rolId;
   const { role_code, role_name, role_description } = req.body;
 
   try {
