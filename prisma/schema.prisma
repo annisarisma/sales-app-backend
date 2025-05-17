@@ -112,6 +112,7 @@ model product_material {
   dtime    DateTime?
   dusr_id  Int?
   products products  @relation(fields: [prd_id], references: [prd_id])
+  materials materials  @relation(fields: [mat_id], references: [mat_id])
 }
 
 model units {
@@ -155,6 +156,7 @@ model materials {
   musr_id        Int?
   dtime          DateTime?
   dusr_id        Int?
+  product_material product_material[]
   material_stock material_stock[]
   suppliers      suppliers        @relation(fields: [sup_id], references: [sup_id])
   units          units            @relation(fields: [unt_id], references: [unt_id])
