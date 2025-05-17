@@ -18,8 +18,8 @@ const getMaterialById = async (matId) => {
 const createMaterial = async ({ unt_id, sup_id, material_code, material_brand, material_name }) => {
   return await prisma.materials.create({
     data: {
-      unt_id,
-      sup_id,
+      unt_id: Number(unt_id),
+      sup_id: Number(sup_id),
       material_code,
       material_brand,
       material_name,
@@ -33,8 +33,8 @@ const updateMaterial = async ({ unt_id, sup_id, material_code, material_brand, m
       mat_id: Number(matId)
     },
     data: {
-      unt_id,
-      sup_id,
+      unt_id: Number(unt_id),
+      sup_id: Number(sup_id),
       material_code,
       material_brand,
       material_name,
