@@ -6,6 +6,9 @@ import userRoutes from './routes/userRoutes.js';
 import roleRoutes from './routes/roleRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
+import materialRoutes from './routes/materialRoutes.js';
+import supplierRoutes from './routes/supplierRoutes.js';
+import unitRoutes from './routes/unitRoutes.js';
 import { fileURLToPath } from 'url';
 
 dotenv.config();
@@ -19,7 +22,7 @@ app.use(express.json());
 
 
 // Register routes
-app.use('/api', userRoutes, roleRoutes, productRoutes, categoryRoutes);
+app.use('/api', userRoutes, roleRoutes, productRoutes, categoryRoutes, materialRoutes, supplierRoutes, unitRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = process.env.PORT || 3000;
