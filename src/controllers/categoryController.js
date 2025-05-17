@@ -41,7 +41,7 @@ const createCategory = async (req, res) => {
 };
 
 const updateCategory = async (req, res) => {
-  const catId = req.params.catId;
+  const catId = req.body.catId;
   const { category_code, category_name } = req.body;
 
   try {
